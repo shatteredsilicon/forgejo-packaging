@@ -1,0 +1,27 @@
+[Unit]
+Description=Forgejo
+Documentation=https://forgejo.org/docs/latest/admin/installation/binary/
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=git
+Group=git
+WorkingDirectory=/var/lib/forgejo
+Environment=USER=git
+Environment=HOME=/home/git
+Environment=FORGEJO_WORK_DIR=/var/lib/forgejo
+Environment=GITEA_WORK_DIR=/var/lib/forgejo
+ExecStart=/usr/bin/forgejo --work-path /var/lib/forgejo --config /etc/forgejo/app.ini web
+Restart=always
+RestartSec=2s
+LimitNOFILE=65535
+
+PrivateTmp=true
+ProtectSystem=full
+ReadWritePaths=/var/lib/forgejo /etc/forgejo /var/log/forgejo /home/git
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
